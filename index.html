@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Grocery Tracker | Bill Total + Analytics</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛒 Smart Grocery Tracker</h1>
+            <p>Add items • Track bill totals • Analytics • Calendar</p>
+        </div>
+
+        <div class="main-grid">
+            <!-- Left Column -->
+            <div>
+                <div class="card">
+                    <h2>➕ Add Items to List</h2>
+                    <div class="input-group" style="position: relative;">
+                        <input type="text" id="itemInput" placeholder="Item name (e.g., Milk, Eggs, Bread)" autocomplete="off">
+                        <div class="qty-group">
+                            <input type="number" id="qtyInput" placeholder="Qty" value="1" step="0.5">
+                            <select id="unitSelect">
+                                <option value="Pcs">Pcs</option>
+                                <option value="kg">kg</option>
+                                <option value="g">g</option>
+                                <option value="L">L</option>
+                                <option value="Pack">Pack</option>
+                                <option value="Bottle">Bottle</option>
+                            </select>
+                        </div>
+                        <button id="addBtn">➕ Add</button>
+                        <div id="suggestions" class="suggestions"></div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 25px;">
+                    <h2>📝 Current Shopping List</h2>
+                    <ul id="groceryList" class="grocery-list">
+                        <li class="empty-state">✨ Your list is empty. Add items above!</li>
+                    </ul>
+                    
+                    <div class="stats-bar">
+                        <div class="stat">
+                            <div class="stat-number" id="totalItems">0</div>
+                            <div class="stat-label">Total Items</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="purchasedItems">0</div>
+                            <div class="stat-label">Purchased</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="remainingItems">0</div>
+                            <div class="stat-label">Remaining</div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button id="clearPurchasedBtn" class="btn btn-secondary">✓ Clear Purchased</button>
+                        <button id="clearAllBtn" class="btn btn-danger">🗑️ Clear All</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+                <div class="card">
+                    <h2>💰 Finalize Purchase</h2>
+                    <div class="bill-section">
+                        <h3>🧾 Enter Total Bill Amount</h3>
+                        <div class="bill-input-group">
+                            <input type="number" id="totalBillInput" placeholder="Enter total bill amount (₹)" step="0.01">
+                            <button id="finalizePurchaseBtn">✅ Save Purchase</button>
+                        </div>
+                        <p class="bill-note">
+                            ⚡ Check the items you bought, then enter the final bill amount from the receipt
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 25px;">
+                    <h2>📊 Purchase Analytics</h2>
+                    <canvas id="purchaseChart" class="chart-container"></canvas>
+                </div>
+
+                <div class="card" style="margin-top: 25px;">
+                    <h2>📅 Purchase Calendar</h2>
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <button class="calendar-nav" id="prevMonth">◀</button>
+                            <h3 id="currentMonthYear">March 2026</h3>
+                            <button class="calendar-nav" id="nextMonth">▶</button>
+                        </div>
+                        <div class="calendar-grid" id="calendarGrid"></div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 25px;">
+                    <h2>📜 Purchase History</h2>
+                    <div id="purchaseHistory" class="purchase-history">
+                        <p class="empty-state">No purchases yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Purchase Details</h2>
+            <div id="modalBody"></div>
+            <button onclick="closeModal()" class="btn btn-secondary" style="margin-top:20px;">Close</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
