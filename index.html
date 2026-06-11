@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Grocery Tracker | Bill Total + Analytics</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🛒 Smart Grocery Tracker</h1>
-            <p>Add items • Track bill totals • Analytics • Calendar</p>
+            <p>Add items • Track bill totals • Calendar • Purchase History</p>
         </div>
 
         <div class="main-grid">
@@ -82,11 +81,6 @@
                 </div>
 
                 <div class="card" style="margin-top: 25px;">
-                    <h2>📊 Purchase Analytics</h2>
-                    <canvas id="purchaseChart" class="chart-container"></canvas>
-                </div>
-
-                <div class="card" style="margin-top: 25px;">
                     <h2>📅 Purchase Calendar</h2>
                     <div class="calendar">
                         <div class="calendar-header">
@@ -100,15 +94,81 @@
 
                 <div class="card" style="margin-top: 25px;">
                     <h2>📜 Purchase History</h2>
+                    
+                    <!-- Search Filter Section -->
+                    <div class="search-section">
+                        <div class="search-group">
+                            <label>Filter by Month & Year:</label>
+                            <div class="search-input-group">
+                                <select id="searchMonth" class="search-select">
+                                    <option value="all">All Months</option>
+                                    <option value="0">January</option>
+                                    <option value="1">February</option>
+                                    <option value="2">March</option>
+                                    <option value="3">April</option>
+                                    <option value="4">May</option>
+                                    <option value="5">June</option>
+                                    <option value="6">July</option>
+                                    <option value="7">August</option>
+                                    <option value="8">September</option>
+                                    <option value="9">October</option>
+                                    <option value="10">November</option>
+                                    <option value="11">December</option>
+                                </select>
+                                <select id="searchYear" class="search-select">
+                                    <option value="all">All Years</option>
+                                </select>
+                                <button id="applyFilterBtn" class="btn btn-primary">🔍 Apply Filter</button>
+                                <button id="clearFilterBtn" class="btn btn-secondary">🗑️ Clear Filter</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Filter Summary -->
+                        <div id="filterSummary" class="filter-summary" style="display: none;"></div>
+                    </div>
+                    
                     <div id="purchaseHistory" class="purchase-history">
                         <p class="empty-state">No purchases yet</p>
+                    </div>
+                    
+                    <!-- Filter Stats -->
+                    <div id="filterStats" class="filter-stats" style="display: none;">
+                        <div class="stats-row">
+                            <span>📊 Showing: <strong id="showingCount">0</strong> of <strong id="totalCount">0</strong> purchases</span>
+                            <span>💰 Total: ₹<strong id="filteredTotal">0</strong></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Edit Item Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h2>✏️ Edit Item</h2>
+            <div style="margin-top: 20px;">
+                <input type="text" id="editItemName" placeholder="Item name" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #2d3555; background: #0f1430; color: #e0e0e0;">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="number" id="editItemQty" placeholder="Quantity" step="0.5" style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #2d3555; background: #0f1430; color: #e0e0e0;">
+                    <select id="editItemUnit" style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #2d3555; background: #0f1430; color: #e0e0e0;">
+                        <option value="Pcs">Pcs</option>
+                        <option value="kg">kg</option>
+                        <option value="g">g</option>
+                        <option value="L">L</option>
+                        <option value="Pack">Pack</option>
+                        <option value="Bottle">Bottle</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button id="saveEditBtn" class="btn btn-primary" style="flex: 1;">💾 Save Changes</button>
+                    <button onclick="closeEditModal()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Details Modal -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <h2 id="modalTitle">Purchase Details</h2>
